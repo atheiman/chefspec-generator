@@ -2,17 +2,18 @@ require 'spec_helper'
 
 RSpec.describe Chefspec::Generator do
   @generator = Chefspec::Generator.new(
-    cookbook_root: File.join(File.dirname(__FILE__), 'test_cookbook')
+    cookbook_root: File.join(spec_root, 'test_cookbook')
   )
-  @src_cookbook = File.join(File.dirname(__FILE__), 'test_cookbook')
 
   before(:all) do
-    current_dir = File.dirname(__FILE__)
-    FileUtils.rm_rf(File.join(current_dir, 'test_cookbook'))
     FileUtils.cp_r(
-      File.join(current_dir, 'support/fixtures/test_cookbook'),
-      current_dir
+      File.join(spec_root, 'support/fixtures/test_cookbook'),
+      spec_root
     )
+  end
+
+  after(:all) do
+    FileUtils.rm_rf(File.join(spec_root, 'test_cookbook'))
   end
 
   it 'has a version number' do
