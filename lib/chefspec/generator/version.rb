@@ -1,5 +1,5 @@
 module Chefspec
-  module Generator
-    VERSION = "0.1.0"
+  class Generator
+    VERSION = '0.1.0'
   end
 end

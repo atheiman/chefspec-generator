@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+require 'chefspec/generator'
+require 'logger'
+require 'optparse'
+
+@config = {}
+@usage = "Usage: #{File.basename(__FILE__)} COOKBOOK [options]"
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = @usage
+
+  opts.on('-v', '--verbose', 'Run verbosely') do
+    options[:log_level] = Logger.const_get('DEBUG')
+  end
+
+  opts.on('-h', '--help', 'Prints this help') do
+    puts opts
+    exit
+  end
+end.parse!
+
+if ARGV.length != 1
+  puts @usage
+  raise(
+    ArgumentError,
+    "Expected one positional argument, received: #{ARGV.inspect}."
+  )
+else
+  @config[:cookbook_root] = File.expand_path(ARGV.first)
+end
+
+puts "options: #{options.inspect}"
+puts "ARGV: #{ARGV.inspect}"
+puts "@config: #{@config.inspect}"
+@generator = Chefspec::Generator.new(@config)
+puts "@generator: #{@generator.inspect}"
